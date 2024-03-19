@@ -45,3 +45,21 @@ def team_get_by_id(team_id):
         return jsonify({'message': f'team found by team_id {team_id}', 'team': team_schema.dump(team_query)}), 200
     except:
         return jsonify({'message': f'no team found with the following id: {team_id}'}), 404
+
+
+@auth_admin
+def team_update(req, team_id):
+    post_data = req.form if req.form else req.json
+
+    query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
+    if not query:
+        return jsonify({'message': f'team with id {team_id} not found'}), 404
+
+    populate_object(query, post_data)
+
+    try:
+        db.session.commit()
+        return jsonify({'message': 'team updated', 'results': team_schema.dump(query)}), 200
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'unable to update team'}), 400

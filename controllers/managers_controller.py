@@ -45,3 +45,21 @@ def manager_get_by_id(manager_id):
         return jsonify({'message': f'manager found by manager_id {manager_id}', 'manager': manager_schema.dump(manager_query)}), 200
     except:
         return jsonify({'message': f'no manager found with the following id: {manager_id}'}), 404
+
+
+@auth_admin
+def manager_update(req, manager_id):
+    post_data = req.form if req.form else req.json
+
+    query = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
+    if not query:
+        return jsonify({'message': f'manager with id {manager_id} not found'}), 404
+
+    populate_object(query, post_data)
+
+    try:
+        db.session.commit()
+        return jsonify({'message': 'manager updated', 'results': manager_schema.dump(query)}), 200
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'unable to update manager'}), 400

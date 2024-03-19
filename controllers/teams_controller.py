@@ -63,3 +63,17 @@ def team_update(req, team_id):
     except:
         db.session.rollback()
         return jsonify({'message': 'unable to update team'}), 400
+
+
+@auth_admin
+def team_delete(team_id):
+    query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
+
+    try:
+        db.session.delete(query)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify({'error': 'unable to delete record'}), 400
+
+    return jsonify({'message': 'record successfully deleted'}), 200

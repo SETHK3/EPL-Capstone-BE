@@ -74,6 +74,6 @@ def team_delete(team_id):
         db.session.commit()
     except:
         db.session.rollback()
-        return jsonify({'error': 'unable to delete record'}), 400
+        return jsonify({'error': 'unable to delete team'}), 400
 
-    return jsonify({'message': 'record successfully deleted'}), 200
+    return jsonify({'message': 'team successfully deleted'}), 200

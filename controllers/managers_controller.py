@@ -63,3 +63,17 @@ def manager_update(req, manager_id):
     except:
         db.session.rollback()
         return jsonify({'message': 'unable to update manager'}), 400
+
+
+@auth_admin
+def manager_delete(manager_id):
+    query = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
+
+    try:
+        db.session.delete(query)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify({'error': 'unable to delete manager'}), 400
+
+    return jsonify({'message': 'manager successfully deleted'}), 200

@@ -21,3 +21,17 @@ def team_add(req):
         return jsonify({'message': 'unable to create new team'}), 400
 
     return jsonify({'message': 'team created', 'result': team_schema.dump(new_team)}), 201
+
+
+@auth
+def teams_get_all():
+    try:
+        query = db.session.query(Teams).all()
+
+        if not query:
+            return jsonify({'message': 'no teams found'}), 404
+
+        else:
+            return jsonify({'message': 'teams found', 'results': teams_schema.dump(query)})
+    except:
+        return jsonify({'message': 'unable to fetch teams'}), 500

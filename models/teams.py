@@ -29,10 +29,19 @@ class Teams(db.Model):
 
 class TeamsSchema(ma.Schema):
     class Meta:
-        fields = ['team_name', 'location', 'stadium_name', 'manager_id']
-    players = ma.fields.Nested("PlayersSchema", exclude=['player_id', 'date_of_birth', 'nationality', 'position', 'team_id'])
-    manager = ma.fields.Nested("ManagersSchema", exclude=['nationality', 'date_of_birth'])
+        fields = ['team_name', 'location', 'stadium_name', 'manager_id', 'players']
+    players = ma.fields.Nested("PlayersSchema", many=True)
+    manager = ma.fields.Nested("ManagerNameSchema")
 
 
 team_schema = TeamsSchema()
 teams_schema = TeamsSchema(many=True)
+
+
+class TeamNameSchema(ma.Schema):
+    class Meta:
+        fields = ['team_name']
+
+
+team_name_schema = TeamNameSchema()
+team_names_schema = TeamNameSchema(many=True)

@@ -26,9 +26,18 @@ class Managers(db.Model):
 
 class ManagersSchema(ma.Schema):
     class Meta:
-        fields = ['manager_name', 'nationality', 'date_of_birth']
-    team = ma.fields.Nested("TeamsSchema", exclude=[''])
+        fields = ['manager_name', 'nationality', 'date_of_birth', 'team']
+    team = ma.fields.Nested("TeamNameSchema")
 
 
 manager_schema = ManagersSchema()
 managers_schema = ManagersSchema(many=True)
+
+
+class ManagerNameSchema(ma.Schema):
+    class Meta:
+        fields = ['manager_name']
+
+
+manager_name_schema = ManagerNameSchema()
+manager_names_schema = ManagerNameSchema(many=True)

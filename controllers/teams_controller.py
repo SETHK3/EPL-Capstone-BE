@@ -35,3 +35,13 @@ def teams_get_all():
             return jsonify({'message': 'teams found', 'results': teams_schema.dump(query)})
     except:
         return jsonify({'message': 'unable to fetch teams'}), 500
+
+
+@auth
+def team_get_by_id(team_id):
+    try:
+        team_query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
+
+        return jsonify({'message': f'team found by team_id {team_id}', 'team': team_schema.dump(team_query)}), 200
+    except:
+        return jsonify({'message': f'no team found with the following id: {team_id}'}), 404

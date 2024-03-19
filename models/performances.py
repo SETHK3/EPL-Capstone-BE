@@ -15,7 +15,7 @@ class Performances(db.Model):
     yellow_cards = db.Column(db.String())
     red_cards = db.Column(db.String())
 
-    player = db.relationship("Players", foreign_keys='[Players.player_id]', back_populates='stats')
+    player = db.relationship("Players", foreign_keys='[Players.player_id]', back_populates='performance')
 
     def __init__(self, player_id, goals_scored, assists, yellow_cards, red_cards):
         self.player_id = player_id

@@ -16,6 +16,7 @@ class Players(db.Model):
     team_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Teams.team_id"), nullable=False)
 
     team = db.relationship("Teams", foreign_keys='[Players.team_id]', back_populates='players')
+    stats = db.relationship("Performances", foreign_keys='[Performances.player_id]', back_populates='player')
 
     def __init__(self, player_name, nationality, date_of_birth, position, team_id):
         self.player_name = player_name

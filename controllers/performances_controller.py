@@ -63,3 +63,17 @@ def performance_update(req, performance_id):
     except:
         db.session.rollback()
         return jsonify({'message': 'unable to update performance record'}), 400
+
+
+@auth_admin
+def performance_delete(performance_id):
+    query = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
+
+    try:
+        db.session.delete(query)
+        db.session.commit()
+    except:
+        db.session.rollback()
+        return jsonify({'error': 'unable to delete performance record'}), 400
+
+    return jsonify({'message': 'performance record successfully deleted'}), 200

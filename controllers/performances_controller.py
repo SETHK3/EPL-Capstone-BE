@@ -45,3 +45,21 @@ def performance_get_by_id(performance_id):
         return jsonify({'message': f'performance record found by performance_id {performance_id}', 'performance record': performance_schema.dump(performance_query)}), 200
     except:
         return jsonify({'message': f'no performance record found with the following id: {performance_id}'}), 404
+
+
+@auth_admin
+def performance_update(req, performance_id):
+    post_data = req.form if req.form else req.json
+
+    query = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
+    if not query:
+        return jsonify({'message': f'performance record with id {performance_id} not found'}), 404
+
+    populate_object(query, post_data)
+
+    try:
+        db.session.commit()
+        return jsonify({'message': 'performance record updated', 'results': performance_schema.dump(query)}), 200
+    except:
+        db.session.rollback()
+        return jsonify({'message': 'unable to update performance record'}), 400

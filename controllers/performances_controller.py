@@ -35,3 +35,13 @@ def performances_get_all():
             return jsonify({'message': 'performance records found', 'results': performances_schema.dump(query)})
     except:
         return jsonify({'message': 'unable to fetch performance records'}), 500
+
+
+@auth
+def performance_get_by_id(performance_id):
+    try:
+        performance_query = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
+
+        return jsonify({'message': f'performance record found by performance_id {performance_id}', 'performance record': performance_schema.dump(performance_query)}), 200
+    except:
+        return jsonify({'message': f'no performance record found with the following id: {performance_id}'}), 404

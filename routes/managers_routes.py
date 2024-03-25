@@ -13,3 +13,8 @@ def add_manager():
 @managers.route('/managers', methods=['GET'])
 def managers_get_all():
     return controllers.managers_get_all()
+
+
+@managers.route('/manager', methods=['GET'])
+def manager_get_by_id():
+    return controllers.manager_get_by_id()

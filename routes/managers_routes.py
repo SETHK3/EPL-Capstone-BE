@@ -23,3 +23,8 @@ def manager_get_by_id():
 @managers.route('/manager/<manager_id>', methods=['PUT'])
 def manager_update(manager_id):
     return controllers.manager_update(request, manager_id)
+
+
+@managers.route('/manager/delete/<manager_id>', methods=['DELETE'])
+def manager_delete(manager_id):
+    return controllers.manager_delete(request, manager_id)

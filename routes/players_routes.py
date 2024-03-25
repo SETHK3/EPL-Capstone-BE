@@ -23,3 +23,8 @@ def players_get_active():
 @players.route('/players/team/<team_id>', methods=['GET'])
 def players_get_by_team_id(team_id):
     return controllers.players_get_by_team_id(team_id)
+
+
+@players.route('/player/<player_id>', methods=['GET'])
+def player_get_by_id(player_id):
+    return controllers.player_get_by_id(player_id)

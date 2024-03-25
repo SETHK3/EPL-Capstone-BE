@@ -28,3 +28,8 @@ def players_get_by_team_id(team_id):
 @players.route('/player/<player_id>', methods=['GET'])
 def player_get_by_id(player_id):
     return controllers.player_get_by_id(player_id)
+
+
+@players.route('/player/<player_id>', methods=['PUT'])
+def player_update(player_id):
+    return controllers.player_update(request, player_id)

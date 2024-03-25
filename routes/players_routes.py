@@ -33,3 +33,8 @@ def player_get_by_id(player_id):
 @players.route('/player/<player_id>', methods=['PUT'])
 def player_update(player_id):
     return controllers.player_update(request, player_id)
+
+
+@players.route('/player/delete/<player_id>', methods=['DELETE'])
+def player_delete(player_id):
+    return controllers.player_delete(request, player_id)

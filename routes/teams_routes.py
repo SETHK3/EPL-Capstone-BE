@@ -10,6 +10,11 @@ def add_team():
     return controllers.team_add(request)
 
 
-@teams.route('/teams', methods=['POST'])
+@teams.route('/teams', methods=['GET'])
 def teams_get_all():
     return controllers.teams_get_all()
+
+
+@teams.route('/team', methods=['GET'])
+def team_get_by_id():
+    return controllers.team_get_by_id()

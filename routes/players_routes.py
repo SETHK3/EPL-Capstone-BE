@@ -13,3 +13,8 @@ def player_add():
 @players.route('/players', methods=['GET'])
 def players_get_all():
     return controllers.players_get_all()
+
+
+@players.route('/players/active', methods=['GET'])
+def players_get_active():
+    return controllers.players_get_active()

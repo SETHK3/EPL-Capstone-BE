@@ -27,4 +27,4 @@ def performance_update(performance_id):
 
 @performances.route('/performance/delete/<performance_id>', methods=['DELETE'])
 def performance_delete(performance_id):
-    return controllers.performance_delete(request, performance_id)
+    return controllers.performance_delete(performance_id)

@@ -27,4 +27,4 @@ def team_update(team_id):
 
 @teams.route('/team/delete/<team_id>', methods=['DELETE'])
 def team_delete(team_id):
-    return controllers.team_delete(request, team_id)
+    return controllers.team_delete(team_id)

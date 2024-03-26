@@ -27,4 +27,4 @@ def manager_update(manager_id):
 
 @managers.route('/manager/delete/<manager_id>', methods=['DELETE'])
 def manager_delete(manager_id):
-    return controllers.manager_delete(request, manager_id)
+    return controllers.manager_delete(manager_id)

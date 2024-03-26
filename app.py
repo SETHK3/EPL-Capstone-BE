@@ -4,7 +4,7 @@ import psycopg2
 import os
 
 from db import *
-# from util.blueprints import register_blueprints
+from util.blueprints import register_blueprints
 from models.users import Users
 from models.auth_tokens import AuthTokens
 
@@ -26,7 +26,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 init_db(app, db)
 
-# register_blueprints(app)
+register_blueprints(app)
 
 
 def create_tables():

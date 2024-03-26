@@ -15,7 +15,7 @@ def managers_get_all():
     return controllers.managers_get_all()
 
 
-@managers.route('/manager', methods=['GET'])
+@managers.route('/manager/<manager_id>', methods=['GET'])
 def manager_get_by_id():
     return controllers.manager_get_by_id()
 

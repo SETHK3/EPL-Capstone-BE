@@ -15,7 +15,7 @@ def teams_get_all():
     return controllers.teams_get_all()
 
 
-@teams.route('/team', methods=['GET'])
+@teams.route('/team/<team_id>', methods=['GET'])
 def team_get_by_id():
     return controllers.team_get_by_id()
 

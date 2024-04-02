@@ -33,8 +33,8 @@ def teams_get_all():
 
         else:
             return jsonify({'message': 'teams found', 'results': teams_schema.dump(query)})
-    except:
-        return jsonify({'message': 'unable to fetch teams'}), 500
+    except Exception as e:
+        return jsonify({'message': f'unable to fetch teams: {str(e)}'}), 500
 
 
 @auth

@@ -30,7 +30,7 @@ class Teams(db.Model):
 class TeamsSchema(ma.Schema):
     class Meta:
         fields = ['team_id', 'team_name', 'location', 'stadium_name', 'manager', 'players']
-    players = ma.fields.Nested("PlayersSchema", many=True)
+    players = ma.fields.Nested("PlayersNameSchema", many=True)
     manager = ma.fields.Nested("ManagerNameSchema")
 
 

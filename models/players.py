@@ -28,7 +28,7 @@ class Players(db.Model):
         self.team_id = team_id
 
     def new_player_obj():
-        return Players("", "", "", "", "")
+        return Players("", "", "", "", "", "")
 
 
 class PlayersSchema(ma.Schema):
@@ -42,9 +42,10 @@ player_schema = PlayersSchema()
 players_schema = PlayersSchema(many=True)
 
 
-class PlayerNameSchema(ma.Schema):
+class PlayersNameSchema(ma.Schema):
     class Meta:
         fields = ['player_name']
 
 
-player_name_schema = PlayerNameSchema()
+player_name_schema = PlayersNameSchema()
+players_name_schema = PlayersNameSchema(many=True)

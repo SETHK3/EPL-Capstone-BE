@@ -42,7 +42,7 @@ def manager_get_by_id(manager_id):
     try:
         manager_query = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
 
-        return jsonify({'message': f'manager found by manager_id {manager_id}', 'manager': manager_schema.dump(manager_query)}), 200
+        return jsonify({'message': f'manager found', 'manager': manager_schema.dump(manager_query)}), 200
     except:
         return jsonify({'message': f'no manager found with the following id: {manager_id}'}), 404
 

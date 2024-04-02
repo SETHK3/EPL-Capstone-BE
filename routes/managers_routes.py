@@ -16,8 +16,8 @@ def managers_get_all():
 
 
 @managers.route('/manager/<manager_id>', methods=['GET'])
-def manager_get_by_id():
-    return controllers.manager_get_by_id()
+def manager_get_by_id(manager_id):
+    return controllers.manager_get_by_id(manager_id)
 
 
 @managers.route('/manager/<manager_id>', methods=['PUT'])

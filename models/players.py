@@ -42,10 +42,10 @@ player_schema = PlayersSchema()
 players_schema = PlayersSchema(many=True)
 
 
-class PlayersNameSchema(ma.Schema):
+class PlayerNameSchema(ma.Schema):
     class Meta:
         fields = ['player_name']
 
 
-player_name_schema = PlayersNameSchema()
-players_name_schema = PlayersNameSchema(many=True)
+player_name_schema = PlayerNameSchema()
+players_name_schema = PlayerNameSchema(many=True)

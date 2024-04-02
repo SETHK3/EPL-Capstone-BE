@@ -31,7 +31,7 @@ class Performances(db.Model):
 class PerformancesSchema(ma.Schema):
     class Meta:
         fields = ['performance_id', 'player', 'player_id', 'goals_scored', 'assists', 'yellow_cards', 'red_cards']
-    player = ma.fields.Nested("PlayerNameSchema")
+    player = ma.fields.Nested("PlayersSchema")
 
 
 performance_schema = PerformancesSchema()

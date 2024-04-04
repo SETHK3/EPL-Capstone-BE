@@ -40,16 +40,6 @@ def players_get_all():
 
 
 @auth
-def players_get_active():
-    try:
-        query = db.session.query(Players).filter(Players.active).all()
-
-        return jsonify({'message': 'active players found', 'results': players_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active players found'}), 500
-
-
-@auth
 def players_get_by_team_id(team_id):
     try:
         query = db.session.query(Players).filter(Players.team_id == team_id).all()

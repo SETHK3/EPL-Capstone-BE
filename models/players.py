@@ -44,7 +44,7 @@ players_schema = PlayersSchema(many=True)
 
 class PlayerNameSchema(ma.Schema):
     class Meta:
-        fields = ['player_name']
+        fields = ['first_name', 'last_name']
 
 
 player_name_schema = PlayerNameSchema()

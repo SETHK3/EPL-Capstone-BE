@@ -16,8 +16,8 @@ def teams_get_all():
 
 
 @teams.route('/team/<team_id>', methods=['GET'])
-def team_get_by_id():
-    return controllers.team_get_by_id()
+def team_get_by_id(team_id):
+    return controllers.team_get_by_id(team_id)
 
 
 @teams.route('/team/<team_id>', methods=['PUT'])

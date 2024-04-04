@@ -12,7 +12,7 @@ class Teams(db.Model):
     team_name = db.Column(db.String(), nullable=False)
     location = db.Column(db.String(), nullable=False)
     stadium_name = db.Column(db.String(), nullable=False)
-    manager_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Managers.manager_id"), nullable=False)
+    manager_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Managers.manager_id", ondelete="CASCADE"), nullable=False)
 
     players = db.relationship("Players", foreign_keys='[Players.team_id]', back_populates='team')
     manager = db.relationship("Managers", foreign_keys='[Teams.manager_id]', back_populates='team')

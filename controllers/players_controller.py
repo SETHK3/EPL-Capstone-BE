@@ -77,7 +77,7 @@ def player_update(req, player_id):
 
 
 @auth_admin
-def player_delete(req, player_id):
+def player_delete(player_id):
     player_query = db.session.query(Players).filter(Players.player_id == player_id).first()
 
     try:

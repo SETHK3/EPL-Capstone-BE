@@ -14,7 +14,7 @@ class Players(db.Model):
     nationality = db.Column(db.String(), nullable=False)
     date_of_birth = db.Column(db.String(), nullable=False)
     position = db.Column(db.String(), nullable=False)
-    team_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Teams.team_id"), nullable=False)
+    team_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Teams.team_id"), nullable=True)
 
     team = db.relationship("Teams", foreign_keys='[Players.team_id]', back_populates='players')
     performance = db.relationship("Performances", foreign_keys='[Performances.player_id]', back_populates='player')

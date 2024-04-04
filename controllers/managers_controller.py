@@ -72,8 +72,8 @@ def manager_delete(manager_id):
     try:
         db.session.delete(query)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'unable to delete manager'}), 400
+        return jsonify({'error': f'unable to delete manager: {str(e)}'}), 400
 
     return jsonify({'message': 'manager successfully deleted'}), 200

@@ -40,7 +40,7 @@ teams_schema = TeamsSchema(many=True)
 
 class TeamNameSchema(ma.Schema):
     class Meta:
-        fields = ['team_name']
+        fields = ['team_name', 'team_id']
 
 
 team_name_schema = TeamNameSchema()

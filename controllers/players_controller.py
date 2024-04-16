@@ -113,14 +113,20 @@ def player_add_transfer(req):
 @auth_admin
 def player_remove_transfer(req, player_id, team_id):
     try:
-        player_query = db.session.query(Players).filter(Players.player_id == player_id).first()
+        player = db.session.query(Players).filter(Players.player_id == player_id).first()
         team_query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
 
-        player_query.categories.remove(team_query)
+        if not player or not team_query:
+            return jsonify({'message': 'player or team not found'}), 404
+
+        if player.team == team_query:
+            return jsonify({'message': 'player is not associated with this team'}), 400
+
+        player.team_id = None
 
         db.session.commit()
 
         return jsonify({'message': 'player transferred back to parent club successfully'}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to undo transfer'}), 400
+        return jsonify({'message': 'unable to undo transfer', 'error': str(e)}), 400

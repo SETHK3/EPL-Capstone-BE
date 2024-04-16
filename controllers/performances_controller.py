@@ -16,9 +16,9 @@ def performance_add(req):
     try:
         db.session.add(new_performance)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to create new performance record'}), 400
+        return jsonify({'message': 'unable to create new performance record', 'error': str(e)}), 400
 
     return jsonify({'message': 'performance record created', 'result': performance_schema.dump(new_performance)}), 201
 

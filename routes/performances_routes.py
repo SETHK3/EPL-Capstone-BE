@@ -16,8 +16,8 @@ def performances_get_all():
 
 
 @performances.route('/performance/<performance_id>', methods=['GET'])
-def performance_get_by_id():
-    return controllers.performance_get_by_id()
+def performance_get_by_id(performance_id):
+    return controllers.performance_get_by_id(performance_id)
 
 
 @performances.route('/performance/<performance_id>', methods=['PUT'])

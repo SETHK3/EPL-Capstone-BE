@@ -85,9 +85,9 @@ def player_delete(player_id):
         db.session.commit()
 
         return jsonify({'message': f'player with player_id {player_id} was deleted'}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': f'player with player_id {player_id} could not be deleted'}), 400
+        return jsonify({'message': f'player with player_id {player_id} could not be deleted', 'error': str(e)}), 400
 
 
 @auth_admin

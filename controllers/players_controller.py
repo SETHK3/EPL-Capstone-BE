@@ -100,7 +100,7 @@ def player_add_transfer(req):
     player_query = db.session.query(Players).filter(Players.player_id == player_id).first()
     team_query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
 
-    player_query.teams.append(team_query)
+    player_query.team = team_query
 
     try:
         db.session.commit()

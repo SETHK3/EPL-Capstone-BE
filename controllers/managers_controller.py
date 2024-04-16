@@ -77,3 +77,43 @@ def manager_delete(manager_id):
         return jsonify({'error': f'unable to delete manager: {str(e)}'}), 400
 
     return jsonify({'message': 'manager successfully deleted'}), 200
+
+
+@auth_admin
+def deactivate_manager(manager_id):
+    try:
+        manager = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
+
+        if not manager:
+            return jsonify({'message': 'manager not found'}), 404
+
+        if manager.active is False:
+            return jsonify({'message': 'manager is already deactivated'}), 400
+
+        manager.active = False
+        db.session.commit()
+
+        return jsonify({'message': 'manager deactivated successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to deactivate manager', 'error': str(e)}), 400
+
+
+@auth_admin
+def activate_manager(manager_id):
+    try:
+        manager = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
+
+        if not manager:
+            return jsonify({'message': 'manager not found'}), 404
+
+        if manager.active is True:
+            return jsonify({'message': 'manager is already active'}), 400
+
+        manager.active = True
+        db.session.commit()
+
+        return jsonify({'message': 'manager activated successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to activate manager', 'error': str(e)}), 400

@@ -138,18 +138,18 @@ def deactivate_player(player_id):
         player = db.session.query(Players).filter(Players.player_id == player_id).first()
 
         if not player:
-            return jsonify({'message': 'Player not found'}), 404
+            return jsonify({'message': 'player not found'}), 404
 
         if player.active is False:
-            return jsonify({'message': 'Player is already deactivated'}), 400
+            return jsonify({'message': 'player is already deactivated'}), 400
 
         player.active = False
         db.session.commit()
 
-        return jsonify({'message': 'Player deactivated successfully'}), 200
+        return jsonify({'message': 'player deactivated successfully'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Unable to deactivate player', 'error': str(e)}), 400
+        return jsonify({'message': 'unable to deactivate player', 'error': str(e)}), 400
 
 
 @auth_admin
@@ -158,15 +158,15 @@ def activate_player(player_id):
         player = db.session.query(Players).filter(Players.player_id == player_id).first()
 
         if not player:
-            return jsonify({'message': 'Player not found'}), 404
+            return jsonify({'message': 'player not found'}), 404
 
         if player.active is True:
-            return jsonify({'message': 'Player is already active'}), 400
+            return jsonify({'message': 'player is already active'}), 400
 
         player.active = True
         db.session.commit()
 
-        return jsonify({'message': 'Player activated successfully'}), 200
+        return jsonify({'message': 'player activated successfully'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Unable to activate player', 'error': str(e)}), 400
+        return jsonify({'message': 'unable to activate player', 'error': str(e)}), 400

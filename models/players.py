@@ -32,7 +32,7 @@ class Players(db.Model):
         self.active = True
 
     def new_player_obj():
-        return Players("", "", "", "", "", "", "", "")
+        return Players("", "", "", "", "", "", "")
 
 
 class PlayersSchema(ma.Schema):

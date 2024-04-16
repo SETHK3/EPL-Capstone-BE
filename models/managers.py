@@ -12,6 +12,7 @@ class Managers(db.Model):
     manager_name = db.Column(db.String(), nullable=False)
     nationality = db.Column(db.String(), nullable=False)
     date_of_birth = db.Column(db.String(), nullable=False)
+    active = db.Column(db.Boolean, default=True)
 
     team = db.relationship("Teams", foreign_keys='[Teams.manager_id]', back_populates='manager', cascade="all,delete")
 
@@ -19,6 +20,7 @@ class Managers(db.Model):
         self.manager_name = manager_name
         self.nationality = nationality
         self.date_of_birth = date_of_birth
+        self.active = True
 
     def new_manager_obj():
         return Managers("", "", "")

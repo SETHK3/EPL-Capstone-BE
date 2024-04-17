@@ -21,7 +21,7 @@ class Players(db.Model):
     team = db.relationship("Teams", foreign_keys='[Players.team_id]', back_populates='players')
     performance = db.relationship("Performances", foreign_keys='[Performances.player_id]', back_populates='player')
 
-    def __init__(self, first_name, last_name, nationality, date_of_birth, position, team_id, transfer_id):
+    def __init__(self, first_name, last_name, nationality, date_of_birth, position, team_id, transfer_id, active):
         self.first_name = first_name
         self.last_name = last_name
         self.nationality = nationality
@@ -29,10 +29,10 @@ class Players(db.Model):
         self.position = position
         self.team_id = team_id
         self.transfer_id = transfer_id
-        self.active = True
+        self.active = active
 
     def new_player_obj():
-        return Players("", "", "", "", "", "", "")
+        return Players("", "", "", "", "", "", "", True)
 
 
 class PlayersSchema(ma.Schema):

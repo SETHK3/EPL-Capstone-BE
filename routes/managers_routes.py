@@ -38,3 +38,8 @@ def deactivate_manager_route(manager_id):
 @managers.route('/manager/activate/<manager_id>', methods=['PUT'])
 def activate_manager_route(manager_id):
     return controllers.activate_manager(manager_id)
+
+
+@managers.route('/managers/active', methods=['GET'])
+def managers_get_active():
+    return controllers.managers_get_active()

@@ -117,3 +117,13 @@ def activate_manager(manager_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate manager', 'error': str(e)}), 400
+
+
+@auth
+def managers_get_active():
+    try:
+        query = db.session.query(Managers).filter(Managers.active).all()
+
+        return jsonify({'message': 'active managers found', 'results': managers_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active managers found'}), 500

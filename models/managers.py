@@ -16,19 +16,19 @@ class Managers(db.Model):
 
     team = db.relationship("Teams", foreign_keys='[Teams.manager_id]', back_populates='manager', cascade="all,delete")
 
-    def __init__(self, manager_name, nationality, date_of_birth):
+    def __init__(self, manager_name, nationality, date_of_birth, active):
         self.manager_name = manager_name
         self.nationality = nationality
         self.date_of_birth = date_of_birth
-        self.active = True
+        self.active = active
 
     def new_manager_obj():
-        return Managers("", "", "")
+        return Managers("", "", "", True)
 
 
 class ManagersSchema(ma.Schema):
     class Meta:
-        fields = ['manager_id', 'manager_name', 'nationality', 'date_of_birth', 'team']
+        fields = ['manager_id', 'manager_name', 'nationality', 'date_of_birth', 'team', 'active']
     team = ma.fields.Nested("TeamNameSchema", many=True)
 
 

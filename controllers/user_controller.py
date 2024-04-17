@@ -57,6 +57,7 @@ def user_update(req, user_id):
         return jsonify({'message': 'unable to update record'}), 400
 
 
+@auth_admin
 def delete_user(user_id):
     user = db.session.query(Users).filter(Users.user_id == user_id).first()
 
@@ -72,3 +73,53 @@ def delete_user(user_id):
         print(e)
         db.session.rollback()
         return jsonify({'message': 'unable to remove user'}), 400
+
+
+@auth_admin
+def deactivate_user(user_id):
+    try:
+        user = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+        if not user:
+            return jsonify({'message': 'user not found'}), 404
+
+        if user.active is False:
+            return jsonify({'message': 'user is already deactivated'}), 400
+
+        user.active = False
+        db.session.commit()
+
+        return jsonify({'message': 'user deactivated successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to deactivate user', 'error': str(e)}), 400
+
+
+@auth_admin
+def activate_user(user_id):
+    try:
+        user = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+        if not user:
+            return jsonify({'message': 'user not found'}), 404
+
+        if user.active is True:
+            return jsonify({'message': 'user is already active'}), 400
+
+        user.active = True
+        db.session.commit()
+
+        return jsonify({'message': 'user reactivated successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to activate user', 'error': str(e)}), 400
+
+
+@auth
+def users_get_active():
+    try:
+        query = db.session.query(Users).filter(Users.active).all()
+
+        return jsonify({'message': 'active users found', 'results': users_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active users found'}), 500

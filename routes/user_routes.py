@@ -23,3 +23,18 @@ def user_update(user_id):
 @users.route('/user/delete/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     return controllers.delete_user(user_id)
+
+
+@users.route('/user/deactivate/<user_id>', methods=['PUT'])
+def deactivate_user(user_id):
+    return controllers.deactivate_user(user_id)
+
+
+@users.route('/user/activate/<user_id>', methods=['PUT'])
+def activate_user(user_id):
+    return controllers.activate_user(user_id)
+
+
+@users.route('/users/active', methods=['GET'])
+def users_get_active():
+    return controllers.users_get_active()

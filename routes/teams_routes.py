@@ -28,3 +28,18 @@ def team_update(team_id):
 @teams.route('/team/delete/<team_id>', methods=['DELETE'])
 def team_delete(team_id):
     return controllers.team_delete(team_id)
+
+
+@teams.route('/team/deactivate/<team_id>', methods=['PUT'])
+def deactivate_team(team_id):
+    return controllers.deactivate_team(team_id)
+
+
+@teams.route('/team/activate/<team_id>', methods=['PUT'])
+def activate_team(team_id):
+    return controllers.activate_team(team_id)
+
+
+@teams.route('/teams/active', methods=['GET'])
+def teams_get_active():
+    return controllers.teams_get_active()

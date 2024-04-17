@@ -170,3 +170,13 @@ def activate_player(player_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate player', 'error': str(e)}), 400
+
+
+@auth
+def players_get_active():
+    try:
+        query = db.session.query(Players).filter(Players.active).all()
+
+        return jsonify({'message': 'active players found', 'results': players_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active players found'}), 500

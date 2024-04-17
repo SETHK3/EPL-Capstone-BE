@@ -31,12 +31,12 @@ def manager_delete(manager_id):
 
 
 @managers.route('/manager/deactivate/<manager_id>', methods=['PUT'])
-def deactivate_manager_route(manager_id):
+def deactivate_manager(manager_id):
     return controllers.deactivate_manager(manager_id)
 
 
 @managers.route('/manager/activate/<manager_id>', methods=['PUT'])
-def activate_manager_route(manager_id):
+def activate_manager(manager_id):
     return controllers.activate_manager(manager_id)
 
 

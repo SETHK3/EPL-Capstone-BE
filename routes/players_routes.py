@@ -46,10 +46,15 @@ def player_remove_transfer(player_id, team_id):
 
 
 @players.route('/players/deactivate/<player_id>', methods=['PUT'])
-def deactivate_player_route(player_id):
+def deactivate_player(player_id):
     return controllers.deactivate_player(player_id)
 
 
 @players.route('/players/activate/<player_id>', methods=['PUT'])
-def activate_player_route(player_id):
+def activate_player(player_id):
     return controllers.activate_player(player_id)
+
+
+@players.route('/players/active', methods=['GET'])
+def players_get_active():
+    return controllers.players_get_active()

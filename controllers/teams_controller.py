@@ -113,7 +113,7 @@ def activate_team(team_id):
         team.active = True
         db.session.commit()
 
-        return jsonify({'message': 'team activated successfully'}), 200
+        return jsonify({'message': 'team reactivated successfully'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate team', 'error': str(e)}), 400

@@ -166,7 +166,7 @@ def activate_player(player_id):
         player.active = True
         db.session.commit()
 
-        return jsonify({'message': 'player activated successfully'}), 200
+        return jsonify({'message': 'player reactivated successfully'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate player', 'error': str(e)}), 400

@@ -113,7 +113,7 @@ def activate_manager(manager_id):
         manager.active = True
         db.session.commit()
 
-        return jsonify({'message': 'manager activated successfully'}), 200
+        return jsonify({'message': 'manager reactivated successfully'}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate manager', 'error': str(e)}), 400

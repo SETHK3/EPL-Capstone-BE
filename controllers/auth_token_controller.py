@@ -60,4 +60,4 @@ def logout(req, user_id):
 
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message:' 'error logging out:' 'error': str(e)})
+        return jsonify({'message': 'error logging out', 'error': str(e)})

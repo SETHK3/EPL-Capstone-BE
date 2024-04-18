@@ -45,3 +45,19 @@ def auth_token_add(req):
     db.session.commit()
 
     return jsonify({"message": {"auth_token": auth_token_schema.dump(new_token)}})
+
+
+def logout(req, user_id):
+    try:
+        auth_data = db.session.query(AuthTokens).filter(AuthTokens.user_id == user_id).first()
+
+        if auth_data:
+            db.session.delete(auth_data)
+            db.session.commit()
+            return jsonify({'message:' 'successfully logged out'})
+        else:
+            return jsonify({'message:' 'unable to logout'})
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message:' 'error logging out:' 'error': str(e)})

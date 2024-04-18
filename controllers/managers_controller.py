@@ -47,6 +47,16 @@ def manager_get_by_id(manager_id):
         return jsonify({'message': f'no manager found with the following id: {manager_id}'}), 404
 
 
+@auth
+def managers_get_active():
+    try:
+        query = db.session.query(Managers).filter(Managers.active).all()
+
+        return jsonify({'message': 'active managers found', 'results': managers_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active managers found'}), 500
+
+
 @auth_admin
 def manager_update(req, manager_id):
     post_data = req.form if req.form else req.json
@@ -80,27 +90,7 @@ def manager_delete(manager_id):
 
 
 @auth_admin
-def deactivate_manager(manager_id):
-    try:
-        manager = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
-
-        if not manager:
-            return jsonify({'message': 'manager not found'}), 404
-
-        if manager.active is False:
-            return jsonify({'message': 'manager is already deactivated'}), 400
-
-        manager.active = False
-        db.session.commit()
-
-        return jsonify({'message': 'manager deactivated successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': 'unable to deactivate manager', 'error': str(e)}), 400
-
-
-@auth_admin
-def activate_manager(manager_id):
+def manager_status(manager_id):
     try:
         manager = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
 
@@ -117,13 +107,3 @@ def activate_manager(manager_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to activate manager', 'error': str(e)}), 400
-
-
-@auth
-def managers_get_active():
-    try:
-        query = db.session.query(Managers).filter(Managers.active).all()
-
-        return jsonify({'message': 'active managers found', 'results': managers_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active managers found'}), 500

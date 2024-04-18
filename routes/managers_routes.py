@@ -20,6 +20,11 @@ def manager_get_by_id(manager_id):
     return controllers.manager_get_by_id(manager_id)
 
 
+@managers.route('/managers/active', methods=['GET'])
+def managers_get_active():
+    return controllers.managers_get_active()
+
+
 @managers.route('/manager/<manager_id>', methods=['PUT'])
 def manager_update(manager_id):
     return controllers.manager_update(request, manager_id)
@@ -30,16 +35,6 @@ def manager_delete(manager_id):
     return controllers.manager_delete(manager_id)
 
 
-@managers.route('/manager/deactivate/<manager_id>', methods=['PUT'])
-def deactivate_manager(manager_id):
-    return controllers.deactivate_manager(manager_id)
-
-
-@managers.route('/manager/activate/<manager_id>', methods=['PUT'])
-def activate_manager(manager_id):
-    return controllers.activate_manager(manager_id)
-
-
-@managers.route('/managers/active', methods=['GET'])
-def managers_get_active():
-    return controllers.managers_get_active()
+@managers.route('/manager/status/<manager_id>', methods=['PUT'])
+def manager_status(manager_id):
+    return controllers.manager_status(manager_id)

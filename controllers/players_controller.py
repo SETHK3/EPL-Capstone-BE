@@ -59,6 +59,16 @@ def player_get_by_id(player_id):
         return jsonify({'message': f'no player found with the following id: {player_id}'}), 404
 
 
+@auth
+def players_get_active():
+    try:
+        query = db.session.query(Players).filter(Players.active).all()
+
+        return jsonify({'message': 'active players found', 'results': players_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active players found'}), 500
+
+
 @auth_admin
 def player_update(req, player_id):
     post_data = req.form if req.form else req.json
@@ -74,6 +84,23 @@ def player_update(req, player_id):
     except:
         db.session.rollback()
         return jsonify({'message': 'unable to update player record'}), 400
+
+
+@auth_admin
+def player_status(player_id):
+    try:
+        player = db.session.query(Players).filter(Players.player_id == player_id).first()
+
+        if player:
+            player.active = not player.active
+            db.session.commit()
+            return jsonify({'message': 'player status updated successfully', 'results': player_schema.dump(player)}), 200
+
+        return jsonify({'message': 'player not found'}), 404
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to activate player', 'error': str(e)}), 400
 
 
 @auth_admin
@@ -130,53 +157,3 @@ def player_remove_transfer(req, player_id, team_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'unable to undo transfer', 'error': str(e)}), 400
-
-
-@auth_admin
-def deactivate_player(player_id):
-    try:
-        player = db.session.query(Players).filter(Players.player_id == player_id).first()
-
-        if not player:
-            return jsonify({'message': 'player not found'}), 404
-
-        if player.active is False:
-            return jsonify({'message': 'player is already deactivated'}), 400
-
-        player.active = False
-        db.session.commit()
-
-        return jsonify({'message': 'player deactivated successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': 'unable to deactivate player', 'error': str(e)}), 400
-
-
-@auth_admin
-def activate_player(player_id):
-    try:
-        player = db.session.query(Players).filter(Players.player_id == player_id).first()
-
-        if not player:
-            return jsonify({'message': 'player not found'}), 404
-
-        if player.active is True:
-            return jsonify({'message': 'player is already active'}), 400
-
-        player.active = True
-        db.session.commit()
-
-        return jsonify({'message': 'player reactivated successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': 'unable to activate player', 'error': str(e)}), 400
-
-
-@auth
-def players_get_active():
-    try:
-        query = db.session.query(Players).filter(Players.active).all()
-
-        return jsonify({'message': 'active players found', 'results': players_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active players found'}), 500

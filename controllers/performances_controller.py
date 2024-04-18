@@ -47,6 +47,16 @@ def performance_get_by_id(performance_id):
         return jsonify({'message': f'no performance record found with the following id: {performance_id}'}), 404
 
 
+@auth
+def performances_get_active():
+    try:
+        query = db.session.query(Performances).filter(Performances.active).all()
+
+        return jsonify({'message': 'active performances found', 'results': performances_schema.dump(query)}), 200
+    except:
+        return jsonify({'message': 'no active performances found'}), 500
+
+
 @auth_admin
 def performance_update(req, performance_id):
     post_data = req.form if req.form else req.json
@@ -66,6 +76,23 @@ def performance_update(req, performance_id):
 
 
 @auth_admin
+def performance_status(performance_id):
+    try:
+        performance = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
+
+        if performance:
+            performance.active = not performance.active
+            db.session.commit()
+            return jsonify({'message': 'performance status updated successfully', 'results': performance_schema.dump(performance)}), 200
+
+        return jsonify({'message': 'performance not found'}), 404
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'unable to activate performance', 'error': str(e)}), 400
+
+
+@auth_admin
 def performance_delete(performance_id):
     query = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
 
@@ -77,53 +104,3 @@ def performance_delete(performance_id):
         return jsonify({'error': 'unable to delete performance record'}), 400
 
     return jsonify({'message': 'performance record successfully deleted'}), 200
-
-
-@auth_admin
-def deactivate_performance(performance_id):
-    try:
-        performance = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
-
-        if not performance:
-            return jsonify({'message': 'performance not found'}), 404
-
-        if performance.active is False:
-            return jsonify({'message': 'performance is already deactivated'}), 400
-
-        performance.active = False
-        db.session.commit()
-
-        return jsonify({'message': 'performance record deactivated successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': 'unable to deactivate performance', 'error': str(e)}), 400
-
-
-@auth_admin
-def activate_performance(performance_id):
-    try:
-        performance = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
-
-        if not performance:
-            return jsonify({'message': 'performance not found'}), 404
-
-        if performance.active is True:
-            return jsonify({'message': 'performance is already active'}), 400
-
-        performance.active = True
-        db.session.commit()
-
-        return jsonify({'message': 'performance record reactivated successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'message': 'unable to activate performance', 'error': str(e)}), 400
-
-
-@auth
-def performances_get_active():
-    try:
-        query = db.session.query(Performances).filter(Performances.active).all()
-
-        return jsonify({'message': 'active performances found', 'results': performances_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active performances found'}), 500

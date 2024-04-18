@@ -25,9 +25,19 @@ def player_get_by_id(player_id):
     return controllers.player_get_by_id(player_id)
 
 
+@players.route('/players/active', methods=['GET'])
+def players_get_active():
+    return controllers.players_get_active()
+
+
 @players.route('/player/<player_id>', methods=['PUT'])
 def player_update(player_id):
     return controllers.player_update(request, player_id)
+
+
+@players.route('/players/status/<player_id>', methods=['PUT'])
+def player_status(player_id):
+    return controllers.player_status(player_id)
 
 
 @players.route('/player/delete/<player_id>', methods=['DELETE'])
@@ -43,18 +53,3 @@ def player_add_transfer():
 @players.route('/player/team/<player_id>/<team_id>', methods=['DELETE'])
 def player_remove_transfer(player_id, team_id):
     return controllers.player_remove_transfer(request, player_id, team_id)
-
-
-@players.route('/players/deactivate/<player_id>', methods=['PUT'])
-def deactivate_player(player_id):
-    return controllers.deactivate_player(player_id)
-
-
-@players.route('/players/activate/<player_id>', methods=['PUT'])
-def activate_player(player_id):
-    return controllers.activate_player(player_id)
-
-
-@players.route('/players/active', methods=['GET'])
-def players_get_active():
-    return controllers.players_get_active()

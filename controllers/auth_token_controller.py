@@ -8,32 +8,40 @@ from models.users import Users
 
 
 def auth_token_add(req):
-    post_data = req.json
-    email = post_data.get('email')
-    password = post_data.get('password')
+    token_req = request.get_json()
 
-    if not email or not password:
-        return jsonify({'message': 'invalid login'}), 401
+    fields = ['email', 'password']
+    req_fields = ["email", "password"]
 
-    now_datetime = datetime.utcnow()
-    expiration_datetime = now_datetime + timedelta(hours=12)
+    values = {}
 
-    user_data = db.session.query(Users).filter(Users.email == email).first()
+    for field in fields:
+        field_data = token_req.get(field)
+        values[field] = field_data
+        if field in req_fields and not values[field]:
+            return jsonify({"message": f'{field} is required'}), 401
 
-    if user_data:
-        is_password_valid = check_password_hash(user_data.password, password)
-        if is_password_valid == False:
-            return jsonify({'message': 'invalid password'}), 401
+    user_data = db.session.query(Users).filter(Users.email == values['email']).first()
 
-        existing_tokens = db.session.query(AuthTokens).filter(AuthTokens.user_id == user_data.user_id).all()
+    if not values['email'] or not values['password'] or not user_data:
+        return jsonify({"message": "invalid login"}), 401
 
-        if existing_tokens:
-            for token in existing_tokens:
-                if token.expiration < now_datetime:
-                    db.session.delete(token)
+    valid_password = check_password_hash(user_data.password, values['password'])
 
-        new_token = AuthTokens(user_data.user_id, expiration_datetime)
-        db.session.add(new_token)
-        db.session.commit()
+    if not valid_password:
+        return jsonify({"message": "invalid Login"}), 401
 
-        return jsonify({'message': 'auth success', 'auth_info': auth_token_schema.dump(new_token)})
+    existing_tokens = db.session.query(AuthTokens).filter(AuthTokens.user_id == user_data.user_id).all()
+
+    expiry = datetime.now() + timedelta(hours=12)
+
+    if existing_tokens:
+        for token in existing_tokens:
+            if token.expiration < datetime.now():
+                db.session.delete(token)
+
+    new_token = AuthTokens(user_data.user_id, expiry)
+    db.session.add(new_token)
+    db.session.commit()
+
+    return jsonify({"message": {"auth_token": auth_token_schema.dump(new_token)}})

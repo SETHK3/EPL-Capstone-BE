@@ -12,9 +12,9 @@ class Transfers(db.Model):
     transfer_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     player_id = db.Column(UUID(as_uuid=True), db.ForeignKey('Players.player_id', ondelete="CASCADE"), nullable=False)
     team_id = db.Column(UUID(as_uuid=True), db.ForeignKey('Teams.team_id', ondelete="CASCADE"), nullable=False)
-    transfer_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    transfer_date = db.Column(db.DateTime, nullable=False)
 
-    player = db.relationship("Players", foreign_keys='[Players.player_id]', backpopulates='transfers')
+    player = db.relationship("Players", foreign_keys='[Players.player_id]', back_populates='transfers')
     teams = db.relationship("Teams", foreign_keys='[Teams.team_id]', back_populates='transfers')
 
     def __init__(self, player_id, team_id, transfer_date):

@@ -1,4 +1,5 @@
 from flask import jsonify
+from datetime import datetime, timezone
 
 from db import db
 from lib.authenticate import auth, auth_admin
@@ -12,6 +13,8 @@ def transfer_add(req):
 
     new_transfer = Transfers.new_transfer_obj()
     populate_object(new_transfer, post_data)
+
+    new_transfer.transfer_date = datetime.now(timezone.utc)
 
     try:
         db.session.add(new_transfer)

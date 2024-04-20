@@ -3,7 +3,6 @@ from sqlalchemy.dialects.postgresql import UUID
 import marshmallow as ma
 
 from db import db
-from datetime import datetime
 
 
 class Transfers(db.Model):

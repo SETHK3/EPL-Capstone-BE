@@ -12,11 +12,12 @@ class Teams(db.Model):
     team_name = db.Column(db.String(), nullable=False)
     location = db.Column(db.String(), nullable=False)
     stadium_name = db.Column(db.String(), nullable=False)
-    manager_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Managers.manager_id"), nullable=False)
+    manager_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Managers.manager_id"), nullable=True)
     active = db.Column(db.Boolean, default=True)
 
     players = db.relationship("Players", foreign_keys='[Players.team_id]', back_populates='team')
     manager = db.relationship("Managers", foreign_keys='[Teams.manager_id]', back_populates='team')
+    transfers = db.relationship("Transfers", foreign_keys='[Transfers.team_id]', back_populates='teams')
 
     def __init__(self, team_name, location, stadium_name, manager_id, active):
         self.team_name = team_name

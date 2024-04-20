@@ -3,7 +3,6 @@ from sqlalchemy.dialects.postgresql import UUID
 import marshmallow as ma
 
 from db import db
-from models.transfer_xref import transfer_table
 
 
 class Players(db.Model):

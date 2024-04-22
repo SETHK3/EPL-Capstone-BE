@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import marshmallow as ma
 
 from db import db
+from .transfer_xref import transfer_table
 
 
 class Transfers(db.Model):
@@ -13,8 +14,8 @@ class Transfers(db.Model):
     team_id = db.Column(UUID(as_uuid=True), db.ForeignKey('Teams.team_id', ondelete="CASCADE"), nullable=False)
     transfer_date = db.Column(db.DateTime, nullable=False)
 
-    player = db.relationship("Players", foreign_keys='[Players.player_id]', back_populates='transfers')
-    teams = db.relationship("Teams", foreign_keys='[Teams.team_id]', back_populates='transfers')
+    player = db.relationship("Players", secondary=transfer_table, back_populates='transfers')
+    teams = db.relationship("Teams", back_populates='transfers')
 
     def __init__(self, player_id, team_id, transfer_date):
         self.player_id = player_id
@@ -28,7 +29,7 @@ class Transfers(db.Model):
 class TransfersSchema(ma.Schema):
     class Meta:
         fields = ['transfer_id', 'transfer_date', 'player', 'teams']
-    player = ma.fields.Nested('PlayerNameSchema')
+    player = ma.fields.Nested('PlayerNameSchema', many=True)
     teams = ma.fields.Nested('TeamNameSchema')
 
 

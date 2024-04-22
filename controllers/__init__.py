@@ -4,3 +4,4 @@ from .performances_controller import *
 from .players_controller import *
 from .teams_controller import *
 from .user_controller import *
+from .transfers_controller import *

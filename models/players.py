@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import marshmallow as ma
 
 from db import db
+from .transfer_xref import transfer_table
 
 
 class Players(db.Model):
@@ -15,12 +16,11 @@ class Players(db.Model):
     date_of_birth = db.Column(db.String(), nullable=False)
     position = db.Column(db.String(), nullable=False)
     team_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Teams.team_id"), nullable=True)
-    transfer_id = db.Column(UUID(as_uuid=True), db.ForeignKey("Transfers.transfer_id"), nullable=True)
     active = db.Column(db.Boolean, default=True)
 
     team = db.relationship("Teams", foreign_keys='[Players.team_id]', back_populates='players')
     performance = db.relationship("Performances", foreign_keys='[Performances.player_id]', back_populates='player')
-    transfers = db.relationship("Transfers", foreign_keys='[Players.transfer_id]', back_populates='player')
+    transfers = db.relationship("Transfers", secondary=transfer_table, back_populates='player')
 
     def __init__(self, first_name, last_name, nationality, date_of_birth, position, team_id, transfer_id, active):
         self.first_name = first_name

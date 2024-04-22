@@ -8,3 +8,4 @@ def register_blueprints(app):
     app.register_blueprint(routes.managers)
     app.register_blueprint(routes.players)
     app.register_blueprint(routes.performances)
+    app.register_blueprint(routes.transfers)

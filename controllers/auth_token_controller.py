@@ -44,7 +44,7 @@ def auth_token_add(req):
     db.session.add(new_token)
     db.session.commit()
 
-    return jsonify({"message": {"auth_token": auth_token_schema.dump(new_token)}})
+    return jsonify({"message": {"auth_token": auth_token_schema.dump(new_token)}}), 201
 
 
 def logout(req, user_id):

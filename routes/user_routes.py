@@ -20,6 +20,11 @@ def users_get_active():
     return controllers.users_get_active()
 
 
+@users.route('/user/<user_id>', methods=["GET"])
+def user_get_by_id(user_id):
+    return controllers.user_get_by_id(user_id)
+
+
 @users.route('/user/<user_id>', methods=['PUT'])
 def user_update(user_id):
     return controllers.user_update(request, user_id)

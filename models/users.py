@@ -12,7 +12,7 @@ class Users(db.Model):
     last_name = db.Column(db.String(), nullable=False)
     email = db.Column(db.String(), nullable=False, unique=True)
     password = db.Column(db.String(), nullable=False)
-    role = db.Column(db.String(), nullable=False)
+    role = db.Column(db.String(), nullable=False, default='user')
     active = db.Column(db.Boolean, default=True)
 
     auth = db.relationship('AuthTokens', back_populates='user', cascade='all')
@@ -26,7 +26,7 @@ class Users(db.Model):
         self.active = active
 
     def get_new_user():
-        return Users('', '', '', '', '', True)
+        return Users('', '', '', '', 'user', True)
 
 
 class UsersSchema(ma.Schema):

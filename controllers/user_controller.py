@@ -10,10 +10,11 @@ from util.reflection import populate_object
 def add_user(req):
     post_data = request.form if request.form else request.json
 
-    new_user = Users.get_new_user()
+    password = post_data.get('password')
 
+    new_user = Users.get_new_user()
     populate_object(new_user, post_data)
-    new_user.password = generate_password_hash(new_user.password).decode('utf8')
+    new_user.password = generate_password_hash(password).decode('utf8')
 
     try:
         db.session.add(new_user)
@@ -34,6 +35,16 @@ def users_get_active():
         return jsonify({'message': 'active users found', 'results': users_schema.dump(query)}), 200
     except:
         return jsonify({'message': 'no active users found'}), 500
+
+
+@auth
+def user_get_by_id(user_id):
+    try:
+        user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
+
+        return jsonify({'message': f'user record found', 'user': user_schema.dump(user_query)}), 200
+    except:
+        return jsonify({'message': f'no user record found with the following id: {user_id}'}), 404
 
 
 @auth

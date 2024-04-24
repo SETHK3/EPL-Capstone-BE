@@ -84,6 +84,20 @@ def transfer_update(req, transfer_id):
     if not query:
         return jsonify({'message': f'transfer record with id {transfer_id} not found'}), 404
 
+    if "player_id" in post_data:
+        player_id = post_data.get("player_id")
+        player = db.session.query(Players).filter(Players.player_id == player_id).first()
+        if not player:
+            return jsonify({'message': f'player with id {player_id} not found'}), 404
+        query.player_id = player_id
+
+    if "team_id" in post_data:
+        team_id = post_data.get("team_id")
+        team = db.session.query(Teams).filter(Teams.team_id == team_id).first()
+        if not team:
+            return jsonify({'message': f'team with id {team_id} not found'}), 404
+        query.team_id = team_id
+
     populate_object(query, post_data)
 
     try:

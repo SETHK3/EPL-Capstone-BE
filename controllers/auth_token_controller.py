@@ -3,6 +3,7 @@ from flask_bcrypt import check_password_hash
 from datetime import datetime, timedelta
 
 from db import db
+from lib.authenticate import auth, auth_admin
 from models.auth_tokens import AuthTokens, auth_token_schema
 from models.users import Users
 
@@ -47,16 +48,18 @@ def auth_token_add(req):
     return jsonify({"message": {"auth_token": auth_token_schema.dump(new_token)}}), 201
 
 
+@auth
 def logout(req, user_id):
     try:
-        auth_data = db.session.query(AuthTokens).filter(AuthTokens.user_id == user_id).first()
+        auth_data = db.session.query(AuthTokens).filter(AuthTokens.user_id == user_id).all()
 
         if auth_data:
-            db.session.delete(auth_data)
+            for token in auth_data:
+                db.session.delete(token)
             db.session.commit()
-            return jsonify({'message:' 'successfully logged out'})
+            return jsonify({'message': 'successfully logged out'})
         else:
-            return jsonify({'message:' 'unable to logout'})
+            return jsonify({'message': 'unable to logout'})
 
     except Exception as e:
         db.session.rollback()

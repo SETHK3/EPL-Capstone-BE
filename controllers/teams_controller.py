@@ -16,9 +16,9 @@ def team_add(req):
     try:
         db.session.add(new_team)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to create new team'}), 400
+        return jsonify({'message': 'unable to create new team', 'error': str(e)}), 400
 
     return jsonify({'message': 'team created', 'result': team_schema.dump(new_team)}), 201
 
@@ -43,8 +43,8 @@ def team_get_by_id(team_id):
         team_query = db.session.query(Teams).filter(Teams.team_id == team_id).first()
 
         return jsonify({'message': f'team found by team_id {team_id}', 'team': team_schema.dump(team_query)}), 200
-    except:
-        return jsonify({'message': f'no team found with the following id: {team_id}'}), 404
+    except Exception as e:
+        return jsonify({'message': f'no team found with the following id: {team_id}', 'error': str(e)}), 404
 
 
 @auth
@@ -53,8 +53,8 @@ def teams_get_active():
         query = db.session.query(Teams).filter(Teams.active).all()
 
         return jsonify({'message': 'active teams found', 'results': teams_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active teams found'}), 500
+    except Exception as e:
+        return jsonify({'message': 'no active teams found', 'error': str(e)}), 500
 
 
 @auth_admin
@@ -70,9 +70,9 @@ def team_update(req, team_id):
     try:
         db.session.commit()
         return jsonify({'message': 'team updated', 'results': team_schema.dump(query)}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to update team'}), 400
+        return jsonify({'message': 'unable to update team', 'error': str(e)}), 400
 
 
 @auth_admin
@@ -99,8 +99,8 @@ def team_delete(team_id):
     try:
         db.session.delete(query)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'unable to delete team'}), 400
+        return jsonify({'error': 'unable to delete team', 'error': str(e)}), 400
 
     return jsonify({'message': 'team successfully deleted'}), 200

@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from db import db
 from lib.authenticate import auth, auth_admin
-from models.transfers import Transfers, transfer_schema, transfers_schema
+from models.transfer import Transfers, transfer_schema, transfers_schema
 from models.players import Players
 from models.teams import Teams
 from util.reflection import populate_object

@@ -5,4 +5,4 @@ from models.players import *
 from models.teams import *
 from models.transfer_xref import *
 from models.users import *
-from models.transfers import *
+from models.transfer import *

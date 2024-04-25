@@ -3,7 +3,7 @@ from flask_bcrypt import generate_password_hash
 
 from db import db
 from lib.authenticate import auth, auth_admin
-from models.users import Users, user_schema, users_schema
+from models.user import Users, user_schema, users_schema
 from util.reflection import populate_object
 
 

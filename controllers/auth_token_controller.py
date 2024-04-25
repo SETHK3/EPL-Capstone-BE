@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from db import db
 from lib.authenticate import auth, auth_admin
-from models.auth_tokens import AuthTokens, auth_token_schema
-from models.users import Users
+from models.auth_token import AuthTokens, auth_token_schema
+from models.user import Users
 
 
 def auth_token_add(req):

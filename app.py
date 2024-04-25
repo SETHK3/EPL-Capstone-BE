@@ -5,8 +5,6 @@ import os
 
 from db import *
 from util.blueprints import register_blueprints
-from models.users import Users
-from models.auth_tokens import AuthTokens
 
 
 flask_host = os.environ.get('FLASK_HOST')

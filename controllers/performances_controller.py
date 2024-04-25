@@ -33,8 +33,8 @@ def performances_get_all():
 
         else:
             return jsonify({'message': 'performance records found', 'results': performances_schema.dump(query)})
-    except:
-        return jsonify({'message': 'unable to fetch performance records'}), 500
+    except Exception as e:
+        return jsonify({'message': 'unable to fetch performance records', 'error': str(e)}), 500
 
 
 @auth
@@ -43,8 +43,8 @@ def performance_get_by_id(performance_id):
         performance_query = db.session.query(Performances).filter(Performances.performance_id == performance_id).first()
 
         return jsonify({'message': f'performance record found by performance_id {performance_id}', 'performance record': performance_schema.dump(performance_query)}), 200
-    except:
-        return jsonify({'message': f'no performance record found with the following id: {performance_id}'}), 404
+    except Exception as e:
+        return jsonify({'message': f'no performance record found with the following id: {performance_id}', 'error': str(e)}), 404
 
 
 @auth
@@ -53,8 +53,8 @@ def performances_get_active():
         query = db.session.query(Performances).filter(Performances.active).all()
 
         return jsonify({'message': 'active performances found', 'results': performances_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active performances found'}), 500
+    except Exception as e:
+        return jsonify({'message': 'no active performances found', 'error': str(e)}), 500
 
 
 @auth_admin
@@ -70,9 +70,9 @@ def performance_update(req, performance_id):
     try:
         db.session.commit()
         return jsonify({'message': 'performance record updated', 'results': performance_schema.dump(query)}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to update performance record'}), 400
+        return jsonify({'message': 'unable to update performance record', 'error': str(e)}), 400
 
 
 @auth_admin
@@ -99,8 +99,8 @@ def performance_delete(performance_id):
     try:
         db.session.delete(query)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'error': 'unable to delete performance record'}), 400
+        return jsonify({'error': 'unable to delete performance record', 'error': str(e)}), 400
 
     return jsonify({'message': 'performance record successfully deleted'}), 200

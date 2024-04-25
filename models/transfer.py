@@ -30,7 +30,7 @@ class TransfersSchema(ma.Schema):
     class Meta:
         fields = ['transfer_id', 'transfer_date', 'player', 'teams']
     player = ma.fields.Nested('PlayerNameSchema', many=True)
-    teams = ma.fields.Nested('TeamNameSchema')
+    teams = ma.fields.Nested('TeamNameSchema', many=True)
 
 
 transfer_schema = TransfersSchema()

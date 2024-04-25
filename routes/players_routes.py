@@ -43,13 +43,3 @@ def player_status(player_id):
 @players.route('/player/delete/<player_id>', methods=['DELETE'])
 def player_delete(player_id):
     return controllers.player_delete(player_id)
-
-
-@players.route('/player/team', methods=['POST'])
-def player_add_transfer():
-    return controllers.player_add_transfer(request)
-
-
-@players.route('/player/team/<player_id>/<team_id>', methods=['DELETE'])
-def player_remove_transfer(player_id, team_id):
-    return controllers.player_remove_transfer(request, player_id, team_id)

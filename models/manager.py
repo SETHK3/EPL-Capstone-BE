@@ -14,7 +14,7 @@ class Managers(db.Model):
     date_of_birth = db.Column(db.String(), nullable=False)
     active = db.Column(db.Boolean, default=True)
 
-    team = db.relationship("Teams", foreign_keys='[Teams.manager_id]', back_populates='manager', cascade="all,delete")
+    team = db.relationship("Teams", foreign_keys='[Teams.manager_id]', back_populates='manager', cascade="all")
 
     def __init__(self, manager_name, nationality, date_of_birth, active):
         self.manager_name = manager_name

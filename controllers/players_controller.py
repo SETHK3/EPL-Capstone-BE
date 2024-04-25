@@ -2,7 +2,7 @@ from flask import jsonify
 
 from db import db
 from lib.authenticate import auth, auth_admin
-from models.transfer_xref import transfer_table
+from models.player_transfer_xref import transfer_table
 from models.team import Teams
 from models.player import Players, player_schema, players_schema
 from util.reflection import populate_object

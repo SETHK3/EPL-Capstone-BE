@@ -20,9 +20,9 @@ def add_user(req):
         db.session.add(new_user)
         db.session.commit()
 
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to create user'}), 400
+        return jsonify({'message': 'unable to create user', 'error': str(e)}), 400
 
     return jsonify({'message': 'user created', 'results': user_schema.dump(new_user)})
 
@@ -33,8 +33,8 @@ def users_get_active():
         query = db.session.query(Users).filter(Users.active).all()
 
         return jsonify({'message': 'active users found', 'results': users_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active users found'}), 500
+    except Exception as e:
+        return jsonify({'message': 'no active users found', 'error': str(e)}), 500
 
 
 @auth
@@ -43,8 +43,8 @@ def user_get_by_id(user_id):
         user_query = db.session.query(Users).filter(Users.user_id == user_id).first()
 
         return jsonify({'message': f'user record found', 'user': user_schema.dump(user_query)}), 200
-    except:
-        return jsonify({'message': f'no user record found with the following id: {user_id}'}), 404
+    except Exception as e:
+        return jsonify({'message': f'no user record found with the following id: {user_id}', 'error': str(e)}), 404
 
 
 @auth
@@ -57,8 +57,8 @@ def users_get_all():
 
         else:
             return jsonify({'message': 'users found', 'results': users_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'unable to fetch users'}), 500
+    except Exception as e:
+        return jsonify({'message': 'unable to fetch users', 'error': str(e)}), 500
 
 
 @auth_admin
@@ -73,9 +73,9 @@ def user_update(req, user_id):
     try:
         db.session.commit()
         return jsonify({'message': 'user updated', 'results': user_schema.dump(query)}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to update record'}), 400
+        return jsonify({'message': 'unable to update record', 'error': str(e)}), 400
 
 
 @auth_admin
@@ -108,6 +108,5 @@ def delete_user(user_id):
         return jsonify({'message': 'user removed successfully', 'user_id': user_id}), 200
 
     except Exception as e:
-        print(e)
         db.session.rollback()
-        return jsonify({'message': 'unable to remove user'}), 400
+        return jsonify({'message': 'unable to remove user', 'error': str(e)}), 400

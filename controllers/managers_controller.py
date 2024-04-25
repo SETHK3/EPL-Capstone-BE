@@ -16,9 +16,9 @@ def manager_add(req):
     try:
         db.session.add(new_manager)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to create new manager'}), 400
+        return jsonify({'message': 'unable to create new manager', 'error': str(e)}), 400
 
     return jsonify({'message': 'manager created', 'result': manager_schema.dump(new_manager)}), 201
 
@@ -33,8 +33,8 @@ def managers_get_all():
 
         else:
             return jsonify({'message': 'managers found', 'results': managers_schema.dump(query)})
-    except:
-        return jsonify({'message': 'unable to fetch managers'}), 500
+    except Exception as e:
+        return jsonify({'message': 'unable to fetch managers', 'error': str(e)}), 500
 
 
 @auth
@@ -43,8 +43,8 @@ def manager_get_by_id(manager_id):
         manager_query = db.session.query(Managers).filter(Managers.manager_id == manager_id).first()
 
         return jsonify({'message': f'manager found', 'manager': manager_schema.dump(manager_query)}), 200
-    except:
-        return jsonify({'message': f'no manager found with the following id: {manager_id}'}), 404
+    except Exception as e:
+        return jsonify({'message': f'no manager found with the following id: {manager_id}', 'error': str(e)}), 404
 
 
 @auth
@@ -53,8 +53,8 @@ def managers_get_active():
         query = db.session.query(Managers).filter(Managers.active).all()
 
         return jsonify({'message': 'active managers found', 'results': managers_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active managers found'}), 500
+    except Exception as e:
+        return jsonify({'message': 'no active managers found', 'error': str(e)}), 500
 
 
 @auth_admin
@@ -70,9 +70,9 @@ def manager_update(req, manager_id):
     try:
         db.session.commit()
         return jsonify({'message': 'manager updated', 'results': manager_schema.dump(query)}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to update manager'}), 400
+        return jsonify({'message': 'unable to update manager', 'error': str(e)}), 400
 
 
 @auth_admin

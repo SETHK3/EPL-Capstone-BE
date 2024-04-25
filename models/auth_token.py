@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy.dialects.postgresql import UUID
 
 from db import db
-from models.__init__ import Users, UsersSchema
+from models.user import Users, UsersSchema
 
 
 class AuthTokens(db.Model):

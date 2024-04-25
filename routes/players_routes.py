@@ -35,7 +35,7 @@ def player_update(player_id):
     return controllers.player_update(request, player_id)
 
 
-@players.route('/players/status/<player_id>', methods=['PUT'])
+@players.route('/player/status/<player_id>', methods=['PUT'])
 def player_status(player_id):
     return controllers.player_status(player_id)
 

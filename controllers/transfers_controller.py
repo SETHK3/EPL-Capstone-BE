@@ -24,8 +24,8 @@ def transfer_add(req):
     new_transfer.transfer_date = datetime.now(timezone.utc)
     new_transfer.player.append(player)
 
-    if new_transfer.teams is None:
-        new_transfer.teams = [team]
+    if new_transfer.teams == None:
+        new_transfer.teams = team
     else:
         new_transfer.teams.append(team)
 

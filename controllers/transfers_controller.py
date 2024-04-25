@@ -34,9 +34,9 @@ def transfer_add(req):
     try:
         db.session.add(new_transfer)
         db.session.commit()
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to create new transfer record'}), 400
+        return jsonify({'message': 'unable to create new transfer record', 'error': str(e)}), 400
 
     return jsonify({'message': 'transfer record created', 'result': transfer_schema.dump(new_transfer)}), 201
 
@@ -51,8 +51,8 @@ def transfers_get_all():
 
         else:
             return jsonify({'message': 'transfer record found', 'results': transfers_schema.dump(query)})
-    except:
-        return jsonify({'message': 'unable to fetch transfer records'}), 500
+    except Exception as e:
+        return jsonify({'message': 'unable to fetch transfer records', 'error': str(e)}), 500
 
 
 @auth
@@ -61,8 +61,8 @@ def transfer_get_by_id(transfer_id):
         transfer_query = db.session.query(Transfers).filter(Transfers.transfer_id == transfer_id).first()
 
         return jsonify({'message': f'transfer record found', 'transfer': transfer_schema.dump(transfer_query)}), 200
-    except:
-        return jsonify({'message': f'no transfer record found with the following id: {transfer_id}'}), 404
+    except Exception as e:
+        return jsonify({'message': f'no transfer record found with the following id: {transfer_id}', 'error': str(e)}), 404
 
 
 @auth
@@ -71,8 +71,8 @@ def transfers_get_active():
         query = db.session.query(Transfers).filter(Transfers.active).all()
 
         return jsonify({'message': 'active transfer records found', 'results': transfers_schema.dump(query)}), 200
-    except:
-        return jsonify({'message': 'no active transfer records found'}), 500
+    except Exception as e:
+        return jsonify({'message': 'no active transfer records found', 'error': str(e)}), 500
 
 
 @auth_admin
@@ -100,9 +100,9 @@ def transfer_update(req, transfer_id):
     try:
         db.session.commit()
         return jsonify({'message': 'transfer record updated', 'results': transfer_schema.dump(query)}), 200
-    except:
+    except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'unable to update transfer record'}), 400
+        return jsonify({'message': 'unable to update transfer record', 'error': str(e)}), 400
 
 
 @auth_admin

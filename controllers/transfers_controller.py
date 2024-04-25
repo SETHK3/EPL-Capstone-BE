@@ -22,7 +22,6 @@ def transfer_add(req):
     populate_object(new_transfer, post_data)
 
     new_transfer.transfer_date = datetime.now(timezone.utc)
-    print(new_transfer.player, new_transfer.teams)
     new_transfer.player.append(player)
 
     if new_transfer.teams == None:
@@ -80,23 +79,21 @@ def transfers_get_active():
 def transfer_update(req, transfer_id):
     post_data = req.form if req.form else req.json
 
+    player_id = post_data.get("player_id")
+    team_id = post_data.get("team_id")
+
+    player = db.session.query(Players).filter(Players.player_id == player_id).first()
+    team = db.session.query(Teams).filter(Teams.team_id == team_id).first()
+
     query = db.session.query(Transfers).filter(Transfers.transfer_id == transfer_id).first()
     if not query:
         return jsonify({'message': f'transfer record with id {transfer_id} not found'}), 404
 
-    if "player_id" in post_data:
-        player_id = post_data.get("player_id")
-        player = db.session.query(Players).filter(Players.player_id == player_id).first()
-        if not player:
-            return jsonify({'message': f'player with id {player_id} not found'}), 404
-        query.player_id = player_id
+    if not player:
+        return jsonify({'message': f'player with id {player_id} not found'}), 404
 
-    if "team_id" in post_data:
-        team_id = post_data.get("team_id")
-        team = db.session.query(Teams).filter(Teams.team_id == team_id).first()
-        if not team:
-            return jsonify({'message': f'team with id {team_id} not found'}), 404
-        query.team_id = team_id
+    if not team:
+        return jsonify({'message': f'team with id {team_id} not found'}), 404
 
     populate_object(query, post_data)
 
